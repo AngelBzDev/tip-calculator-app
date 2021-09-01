@@ -233,7 +233,7 @@ button:hover{
 
 .btn-active{
    background: var(--strongCyan);
-   color: var(--white);
+   color: var(--darkCyan);
 }
 
 .btn-custom{

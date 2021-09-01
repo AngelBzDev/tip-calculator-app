@@ -4,7 +4,7 @@ const form = document.querySelector('form');
 
 const inputBill = document.querySelector('#bill')
 const inputNumPeople = document.querySelector('#number-people')
-const inputCustom = document.querySelector('#custom')
+
 
 window.onload = () => {
    initApp()
@@ -15,7 +15,7 @@ const initApp = () => {
       event.preventDefault()
    })
    inputBill.addEventListener('input', validateInput)   
-   inputNumPeople.addEventListener('input', validateInput)   
+   inputNumPeople.addEventListener('input', validateInput)  
    generateButtons()
    activeButton()
    resetInputs()
@@ -29,6 +29,16 @@ const validateInput = (e) => {
       if(!subTitle.querySelector('.message-error')){
          const p = document.createElement('p')
          p.textContent = `Can't be zero`
+         p.classList.add('message-error')
+         subTitle.appendChild(p)
+      }
+      e.target.parentElement.classList.add('input-err')
+      e.target.parentElement.classList.remove('input')
+   }
+   else if(valueInput < 0){
+      if(!subTitle.querySelector('.message-error')){
+         const p = document.createElement('p')
+         p.textContent = `Can't be minus of zero`
          p.classList.add('message-error')
          subTitle.appendChild(p)
       }
@@ -53,12 +63,18 @@ const generateButtons = () => {
       butt.classList.add('btn', 'btn-percentage')
       percentageContainer.appendChild(butt)
    })
-   let customInp = document.createElement('input')
+   const customInp = document.createElement('input')
    customInp.id = 'custom'
    customInp.type = 'number'
    customInp.classList.add('btn', 'btn-custom')
    customInp.placeholder = 'Custom'
    percentageContainer.appendChild(customInp)
+
+   customInp.addEventListener('input', (e) => {
+      if(e.target.value !== '' ){
+         document.querySelector('.btn-active') && document.querySelector('.btn-active').classList.remove('btn-active')  
+      }
+   })
 }
 
 const activeButton = () => {
@@ -68,10 +84,12 @@ const activeButton = () => {
          btnActive = document.querySelectorAll('.btn-active')
          if(btnActive.length < 1){
             button.classList.add('btn-active')
+            document.querySelector('#custom').value = ''
          }
          else{
             btnActive[0].classList.remove('btn-active')
             button.classList.add('btn-active')
+            document.querySelector('#custom').value = ''
          }
       })
    })
