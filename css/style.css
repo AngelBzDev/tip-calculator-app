@@ -63,7 +63,7 @@ body{
 
 @media (min-width: 768px) {
    .app-container{
-      width: 70%;
+      width: 90%;
       display: grid;
       padding: 3rem;
       grid-template-columns: repeat(2, 1fr);
@@ -75,12 +75,12 @@ body{
 
 @media (min-width: 1024px){
    .app-container{
-      width: 50%;
+      width: 80%;
    }
 }
 
 .app-container p{
-   font-size: 1.2rem;
+   font-size: 1.5rem;
    font-weight: 700;
    color: var(--grayishCyan2);
    margin-bottom: .7rem;
@@ -95,7 +95,7 @@ body{
    border-radius: .4rem;
    align-items: center;
    justify-items: center;
-   margin-bottom: 2.5rem;
+   margin-bottom: 3.5rem;
    
 }
 
@@ -113,6 +113,10 @@ body{
    font-family: 'Space Mono', monospace;
    font-weight: 700;
    color: var(--darkCyan);
+}
+
+.input input::placeholder{
+   color: rgb(201, 201, 201);
 }
 
 .input-err{
@@ -157,8 +161,8 @@ input[type="number"]::-webkit-outer-spin-button{
 .percentage-container{
    display: grid;
    grid-template-columns: repeat(2, 1fr);
-   gap: .8rem;
-   margin-bottom: 2.5rem;
+   gap: 1rem;
+   margin-bottom: 3.5rem;
 }
 
 button{
@@ -173,12 +177,13 @@ button:hover{
 @media (min-width: 768px) {
    .percentage-container{
       grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
    }
 }
 
 .total-container{
    background: var(--darkCyan);
-   padding: 2.7rem 1.5rem 1.5rem 1.5rem;
+   padding: 3.5rem 3rem 2.5rem 3rem;
    border-radius: 1rem;
 }
 
@@ -187,6 +192,7 @@ button:hover{
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      padding: 4.5rem 4rem 3.5rem 4rem;
    }
 }
 
@@ -209,13 +215,19 @@ button:hover{
    font-size: 2.4rem;
 }
 
+@media (min-width: 768px) {
+   .total-col .total{
+      font-size: 3.5rem;
+   }
+}
+
 .btn{
    border: none;
    width: 100%;
-   padding: 1rem;
+   padding: .5rem;
    border-radius: .5rem;
    font-family: 'Space Mono', monospace;
-   font-size: 1.5rem;
+   font-size: 2rem;
    font-weight: 700;
    cursor: pointer;
 }
@@ -223,6 +235,7 @@ button:hover{
 @media (min-width: 768px) {
    .btn{
       padding: .5rem;
+      font-size: 2.5rem;
    }
 }
 
