@@ -3,7 +3,12 @@
 const form = document.querySelector('form');
 
 const inputBill = document.querySelector('#bill')
-const inputNumPeople = document.querySelector('#number-people')
+const inputNumPeople = document.querySelector('#numberPeople')
+
+let values = {}
+
+const tipAmout = document.querySelector('#tipAmout')
+const total = document.querySelector('#total')
 
 
 window.onload = () => {
@@ -14,11 +19,11 @@ const initApp = () => {
    form.addEventListener('submit', (event) => {
       event.preventDefault()
    })
-   inputBill.addEventListener('input', validateInput)   
-   inputNumPeople.addEventListener('input', validateInput)  
    generateButtons()
    activeButton()
    resetInputs()
+   inputBill.addEventListener('input', validateInput)   
+   inputNumPeople.addEventListener('input', validateInput)
 }
 
 const validateInput = (e) => {
@@ -34,8 +39,9 @@ const validateInput = (e) => {
       }
       e.target.parentElement.classList.add('input-err')
       e.target.parentElement.classList.remove('input')
+      return
    }
-   else if(valueInput < 0){
+   if(valueInput < 0){
       if(!subTitle.querySelector('.message-error')){
          const p = document.createElement('p')
          p.textContent = `Can't be minus of zero`
@@ -44,14 +50,18 @@ const validateInput = (e) => {
       }
       e.target.parentElement.classList.add('input-err')
       e.target.parentElement.classList.remove('input')
+      return
    }
-   else{
-      const msj = e.target.parentElement.previousSibling.previousSibling.lastChild
-      msj.tagName === 'P' && msj.classList.contains('message-error') && msj.remove()
+   const msj = e.target.parentElement.previousSibling.previousSibling.lastChild
+   msj.tagName === 'P' && msj.classList.contains('message-error') && msj.remove()
 
-      e.target.parentElement.classList.add('input')
-      e.target.parentElement.classList.remove('input-err')
-   }
+   e.target.parentElement.classList.add('input')
+   e.target.parentElement.classList.remove('input-err')
+
+   values[e.target.id] = e.target.value
+
+   calculateTip()
+   
 }
 
 const generateButtons = () => {
@@ -72,7 +82,9 @@ const generateButtons = () => {
 
    customInp.addEventListener('input', (e) => {
       if(e.target.value !== '' ){
-         document.querySelector('.btn-active') && document.querySelector('.btn-active').classList.remove('btn-active')  
+         document.querySelector('.btn-active') && document.querySelector('.btn-active').classList.remove('btn-active')
+         values[e.target.id] = e.target.value
+         calculateTip()
       }
    })
 }
@@ -91,6 +103,10 @@ const activeButton = () => {
             button.classList.add('btn-active')
             document.querySelector('#custom').value = ''
          }
+         const tip = parseInt(button.textContent.replace('%', ''))
+         values.tip = tip
+         calculateTip()
+         
       })
    })
 }
@@ -99,5 +115,41 @@ const resetInputs = () => {
    document.querySelector('input[type=reset]').addEventListener('click', () => {
       const btnActive = document.querySelector('.btn-active')
       btnActive && btnActive.classList.remove('btn-active')
+      values = {}
+      tipAmout.textContent = '$0.00'
+      total.textContent = '$0.00'
    })
+}
+
+const calculateTip = () => {
+   const { bill, numberPeople, custom, tip } = values
+
+   if(document.querySelector('.btn-active') && parseFloat(bill) > 0 && parseInt(numberPeople) > 0 ){
+      const btnAct = parseInt(document.querySelector('.btn-active').textContent.replace('%', ''))
+      
+      const [amout, totalTip] = doOperation(bill, btnAct, numberPeople)
+      
+      tipAmout.textContent = `$${amout}`
+      total.textContent = `$${totalTip}`
+
+   }
+
+   if(!document.querySelector('.btn-active') && parseFloat(bill) > 0 && parseInt(numberPeople) > 0 ){
+
+      const [amout, totalTip] = doOperation(bill, custom, numberPeople)
+      
+      tipAmout.textContent = `$${amout}`
+      total.textContent = `$${totalTip}`
+
+      return
+   }
+}
+
+const doOperation = (bill, tip, numberPeople) => {
+   let amout = (bill * tip / 100).toFixed(2)
+   let totalTip = (amout / numberPeople).toFixed(2)
+   
+   return [
+      amout, totalTip
+   ]
 }
